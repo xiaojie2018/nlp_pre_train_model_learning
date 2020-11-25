@@ -18,6 +18,9 @@ def read_data(file):
         data.append(line)
         data_num.append(len(line))
     data_num = sorted(list(set(data_num)))
+    print(file)
+    print(data_num)
+    print('*'*60)
     res = []
     for d in data:
         res.append({'text': d[:-1], "label": d[-1]})
@@ -65,9 +68,19 @@ def wee(file, data):
 
 
 def read_ocemotion_data(file, outfile):
+    """
+    :param file:
+    :param outfile:
+    309
+    3
+    47.49319213313162
+    {'sadness': 11210, 'happiness': 7975, 'like': 3657, 'anger': 3657, 'fear': 525, 'surprise': 808, 'disgust': 3896}
+    :return:
+    """
     data = read_data(file)
-    print(1)
-
+    data_len = [len(d['text'][0]) for d in data]
+    tongji_len(data_len)
+    res = [{"text": d['text'][0], "label": d['label']} for d in data]
     train_data, test_data = data_train_test_split(res)
     train_file = outfile + '_train.json'
     test_file = outfile + '_test.json'
@@ -76,8 +89,31 @@ def read_ocemotion_data(file, outfile):
 
 
 def read_ocnli_data(file, outfile):
+    """
+    :param file:
+    :param outfile:
+    107
+    10
+    35.576521204671174
+
+    50
+    7
+    24.165969427206218
+
+    60
+    2
+    11.410551777464956
+    {'0': 16779, '1': 17182, '2': 16476}
+    :return:
+    """
     data = read_data(file)
-    print(1)
+    data_len = [len(''.join(d['text'])) for d in data]
+    data_len1 = [len(d['text'][0]) for d in data]
+    data_len2 = [len(d['text'][1]) for d in data]
+    tongji_len(data_len)
+    tongji_len(data_len1)
+    tongji_len(data_len2)
+    res = [{"text": d['text'][0], "text_b": d['text'][1], "label": d['label']} for d in data]
     train_data, test_data = data_train_test_split(res)
     train_file = outfile + '_train.json'
     test_file = outfile + '_test.json'
@@ -109,8 +145,7 @@ def read_tnews_data(file, outfile):
 
 
 if __name__ == '__main__':
-    flags = [('OCEMOTION', read_ocemotion_data), ("OCNLI", read_ocnli_data), ("TNEWS", read_tnews_data)][2:]
+    flags = [('OCEMOTION', read_ocemotion_data), ("OCNLI", read_ocnli_data), ("TNEWS", read_tnews_data)]
     for flag, f in flags:
         file = file_path + '{}_train.csv'.format(flag)
         data = f(file, './data/{}'.format(flag.lower()))
-        print(1)
