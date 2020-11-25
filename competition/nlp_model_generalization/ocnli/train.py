@@ -4,9 +4,9 @@
 # software: PyCharm
 
 
-from utils import SimilarityDataPreprocess, init_logger
+from ocnli.utils import SimilarityDataPreprocess, init_logger
 from argparse import Namespace
-from trainer import Trainer
+from ocnli.trainer import Trainer
 import logging
 import os
 import json

@@ -4,19 +4,16 @@
 # software: PyCharm
 
 
-from transformers import BertTokenizer, BertConfig, AlbertConfig, AlbertTokenizer, RobertaConfig, RobertaTokenizer, \
-    XLNetConfig, XLNetTokenizer, XLNetModel
-from transformers import BertModel, BertPreTrainedModel, RobertaModel, AlbertModel
-from config import MODEL_CLASSES
+from transformers import BertTokenizer
+from ocnli.config import MODEL_CLASSES
 import logging
 import copy
 import json
 import numpy as np
 import torch
 import random
-from tqdm import tqdm
 from torch.utils.data import TensorDataset
-from mertics import metrics_report
+from ocnli.mertics import metrics_report
 
 logger = logging.getLogger(__name__)
 

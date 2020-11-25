@@ -6,14 +6,14 @@
 import os
 import logging
 from tqdm import tqdm, trange
-from utils import set_seed, compute_metrics
+from ocnli.utils import set_seed, compute_metrics
 # from mertics import text_multi_label_classification_evaluate
 # from config import MODEL_CLASSES, MODEL_TASK
-from model import ClassificationModel
+from ocnli.model import ClassificationModel
 import numpy as np
 import torch
-from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
-from transformers import BertConfig, AdamW, get_linear_schedule_with_warmup
+from torch.utils.data import DataLoader, RandomSampler
+from transformers import AdamW, get_linear_schedule_with_warmup
 from tensorboardX import SummaryWriter
 logger = logging.getLogger(__name__)
 

@@ -4,11 +4,10 @@
 # software: PyCharm
 
 
-from transformers.modeling_bert import BertPreTrainedModel, BertModel, BertPooler
+from transformers.modeling_bert import BertPreTrainedModel
 import torch.nn as nn
-from config import MODEL_CLASSES
+from ocnli.config import MODEL_CLASSES
 import torch
-import torch.nn.functional as F
 import numpy as np
 
 
