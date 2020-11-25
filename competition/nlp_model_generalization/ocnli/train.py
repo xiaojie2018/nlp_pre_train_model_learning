@@ -3,15 +3,21 @@
 # datetime: 2020/6/22 17:56
 # software: PyCharm
 
-
+import pathlib
+import sys
+import os
+project_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent)
+# print(project_path)
+sys.path.append(project_path)
 from ocnli.utils import SimilarityDataPreprocess, init_logger
 from argparse import Namespace
 from ocnli.trainer import Trainer
 import logging
-import os
 import json
 import codecs
+# import torch
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# torch.cuda._initialized = True
 init_logger()
 logger = logging.getLogger(__name__)
 
@@ -27,12 +33,13 @@ class LanguageModelSimilarityTrain(SimilarityDataPreprocess):
 
     def data_preprocess(self):
 
-        train_data = self.get_data(self.config.train_file_url)
-        test_data = self.get_data(self.config.test_file_url)
+        train_data, labels1 = self.get_data(self.config.train_file_url)
+        test_data, labels2 = self.get_data(self.config.test_file_url)
         dev_data = test_data
 
-        # labels = sorted(list(set(labels1 + labels2 + labels3)))
-        labels = [0, 1]
+        labels = sorted(list(set(labels1 + labels2)))
+        print('labels: ', labels)
+        # labels = [0, 1]
         # labels = [1]
 
         self.labels = labels
@@ -91,11 +98,11 @@ if __name__ == '__main__':
         "task_type": "classification",
         "model_name_or_path": "E:\\nlp_tools\\bert_models\\bert-base-chinese",
         "seed": 1234,
-        "train_batch_size": 16,
-        "eval_batch_size": 16,
-        "max_seq_len": 168,
+        "train_batch_size": 32,
+        "eval_batch_size": 64,
+        "max_seq_len": 112,
         "learning_rate": 5e-5,
-        "num_train_epochs": 20,
+        "num_train_epochs": 50,
         "weight_decay": 0.0,
         "gradient_accumulation_steps": 1,
         "adam_epsilon": 1e-8,
@@ -107,9 +114,9 @@ if __name__ == '__main__':
         "save_steps": 500,
         "no_cuda": False,
         "ignore_index": 0,
-        "train_file_url": "D:\\bishai\\data\\ccf2020\\房产行业聊天问答匹配\\train\\train_train.json",
-        "test_file_url": "D:\\bishai\\data\\ccf2020\\房产行业聊天问答匹配\\train\\train_test.json",
-        "dev_file_url": "D:\\bishai\\data\\ccf2020\\房产行业聊天问答匹配\\train\\train_test.json",
+        "train_file_url": "../data/ocnli_train.json",
+        "test_file_url": "../data/ocnli_test.json",
+        "dev_file_url": "../data/ocnli_test.json",
     }
 
     model_type = ["bert", "ernie", "albert", "roberta", "bert_www", "xlnet_base", "xlnet_mid",
@@ -146,7 +153,7 @@ if __name__ == '__main__':
     config_params['model_type'] = model_type[1]
     config_params['model_name_or_path'] = pre_model_path[config_params['model_type']]
     config_params['pretrained_model_path'] = pre_model_path[config_params['model_type']]
-    config_params['model_save_path'] = "./output/model_{}_1115_1".format(config_params['model_type'])
+    config_params['model_save_path'] = "./output/model_{}_1126_1".format(config_params['model_type'])
     lc = LanguageModelSimilarityTrain(config_params)
     lc.data_preprocess()
     lc.fit()

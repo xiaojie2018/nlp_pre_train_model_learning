@@ -272,16 +272,16 @@ class SimilarityDataPreprocess:
         examples = []
         for i, d in enumerate(data):
             labels = d['label']
-            text = d['text1']
-            textb = d['text2']
-            if isinstance(d['text2'], str):
-                textb = [d['text2']]
+            text = d['text']
+            textb = d['text_b']
+            if isinstance(d['text_b'], str):
+                textb = [d['text_b']]
             if len(textb[-1]) == 0:
                 continue
             guid = "%s-%s" % (set_type, i)
             label_list = [0.0] * leng_label
-            # for label in labels:
-            label_list[label_id[labels]] = 1.0
+            for label in labels:
+                label_list[label_id[label]] = 1.0
             # label_list = float(labels)
 
             examples.append(InputExample(guid=guid, text=text, text_b=textb, label=label_list))
@@ -303,10 +303,13 @@ class SimilarityDataPreprocess:
 
     def get_data(self, file):
         data = []
+        label = []
         with open(file, 'r', encoding='utf-8') as f:
             for line in f:
-                data.append(eval(line))
-        return data
+                line = eval(line)
+                data.append(line)
+                label.append(line['label'])
+        return data, sorted(list(set(label)))
 
 
 def compute_metrics(intent_preds_list, out_intent_label_list):

@@ -170,9 +170,11 @@ class ClassificationModel(BertPreTrainedModel):
         # attention
         # self.att = SelfAttention(sentence_num=34, key_size=bert_config.hidden_size, hidden_size=bert_config.hidden_size)
 
-        self.ntn_layer = NTNLayer(bert_config.hidden_size, int(bert_config.hidden_size/2), args.dropout_rate)
+        # self.ntn_layer = NTNLayer(bert_config.hidden_size, int(bert_config.hidden_size/2), args.dropout_rate)
 
-        self.label_classifier = FCLayer_softmax(bert_config.hidden_size + int(bert_config.hidden_size/2), self.label_num, args.dropout_rate)
+        # self.label_classifier = FCLayer_softmax(bert_config.hidden_size + int(bert_config.hidden_size/2), self.label_num, args.dropout_rate)
+
+        self.label_classifier = FCLayer_softmax(bert_config.hidden_size*3, self.label_num, args.dropout_rate)
 
         self.cls_fc_layer = FCLayer(bert_config.hidden_size, bert_config.hidden_size, args.dropout_rate)
         self.entity_fc_layer = FCLayer(bert_config.hidden_size, bert_config.hidden_size, args.dropout_rate)
@@ -222,11 +224,11 @@ class ClassificationModel(BertPreTrainedModel):
         e1_h = self.entity_fc_layer(e1_h)
         e2_h = self.entity_fc_layer1(e2_h)
 
-        o1 = self.ntn_layer(e1_h, e2_h)
+        # o1 = self.ntn_layer(e1_h, e2_h)
         # Concat -> fc_layer
-        # concat_h = torch.cat([pooled_output, e1_h, e2_h], dim=-1)
+        concat_h = torch.cat([pooled_output, e1_h, e2_h], dim=-1)
         # concat_h = torch.cat([e1_h, e2_h], dim=-1)
-        concat_h = torch.cat([pooled_output, o1], dim=-1)
+        # concat_h = torch.cat([pooled_output, o1], dim=-1)
         logits = self.label_classifier(concat_h)
 
         outputs = (logits,) + outputs[2:]  # add hidden states and attention if they are here
