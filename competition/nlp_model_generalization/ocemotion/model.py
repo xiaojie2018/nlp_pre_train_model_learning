@@ -132,12 +132,12 @@ class ClassificationModel(BertPreTrainedModel):
         # for param in self.bert.parameters():
         #     param.requires_grad = True
 
-        self.pooling = BertPool(bert_config)
+        # self.pooling = BertPool(bert_config)
 
         # attention
         # self.att = SelfAttention(sentence_num=34, key_size=bert_config.hidden_size, hidden_size=bert_config.hidden_size)
 
-        self.fc = FCLayer(bert_config.hidden_size, self.label_num)
+        self.fc = FCLayer(bert_config.hidden_size, self.label_num, dropout_rate=args.dropout_rate)
         # self.fc2 = FCLayer(bert_config.hidden_size * 2, self.label_num)
         # self.fc1 = FCLayer(bert_config.hidden_size, self.label_num)
         # self.fc2 = FCLayer(bert_config.hidden_size, self.label_num)

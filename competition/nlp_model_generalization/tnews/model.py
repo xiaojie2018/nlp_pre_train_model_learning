@@ -50,9 +50,9 @@ class FCLayer(nn.Module):
 
     def forward(self, x):
         x = self.dropout(x)
-        x = self.linear(x)
         if self.use_activation:
             x = self.tanh(x)
+        x = self.linear(x)
         x = self.softmax(x)
         # y = self.sigmoid(x1)
         return x
@@ -137,7 +137,7 @@ class ClassificationModel(BertPreTrainedModel):
         # attention
         # self.att = SelfAttention(sentence_num=34, key_size=bert_config.hidden_size, hidden_size=bert_config.hidden_size)
 
-        self.fc = FCLayer(bert_config.hidden_size, self.label_num)
+        self.fc = FCLayer(bert_config.hidden_size, self.label_num, dropout_rate=args.dropout_rate)
         # self.fc2 = FCLayer(bert_config.hidden_size * 2, self.label_num)
         # self.fc1 = FCLayer(bert_config.hidden_size, self.label_num)
         # self.fc2 = FCLayer(bert_config.hidden_size, self.label_num)
