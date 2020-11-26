@@ -101,9 +101,9 @@ if __name__ == '__main__':
         "save_steps": 1000,
         "no_cuda": False,
         "ignore_index": 0,
-        "train_file_url": "../data/tnews_train.json",
-        "test_file_url": "../data/tnews_test.json",
-        "dev_file_url": "../data/tnews_test.json",
+        "train_file_url": "../data/ocemotion_train.json",
+        "test_file_url": "../data/ocemotion_test.json",
+        "dev_file_url": "../data/ocemotion_test.json",
         "job_name": "dialog_intent_classification"
     }
 
