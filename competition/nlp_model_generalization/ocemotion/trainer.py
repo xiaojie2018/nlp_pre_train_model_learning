@@ -6,9 +6,9 @@
 import os
 import logging
 from tqdm import tqdm, trange
-from tnews.utils import set_seed, compute_metrics
+from ocemotion.utils import set_seed, compute_metrics
 # from config import MODEL_CLASSES, MODEL_TASK
-from tnews.model import ClassificationModel
+from ocemotion.model import ClassificationModel
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler

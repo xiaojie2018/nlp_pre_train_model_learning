@@ -16,8 +16,8 @@ import torch
 import random
 from tqdm import tqdm
 from torch.utils.data import TensorDataset
-from tnews.mertics import metrics_report
-from tnews.text_augment import word_level_augment
+from ocemotion.mertics import metrics_report
+from ocemotion.text_augment import word_level_augment
 
 
 logger = logging.getLogger(__name__)

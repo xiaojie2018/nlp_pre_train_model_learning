@@ -7,6 +7,7 @@ import pathlib
 import sys
 import os
 project_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent)
+sys.path.append(project_path)
 from tnews.utils import ClassificationDataPreprocess, init_logger
 from argparse import Namespace
 from tnews.trainer import Trainer
@@ -86,10 +87,10 @@ if __name__ == '__main__':
         "model_name_or_path": "E:\\nlp_tools\\bert_models\\bert-base-chinese",
         "seed": 1234,
         "train_batch_size": 32,
-        "eval_batch_size": 32,
+        "eval_batch_size": 64,
         "max_seq_len": 128,
         "learning_rate": 5e-5,
-        "num_train_epochs": 10,
+        "num_train_epochs": 20,
         "weight_decay": 0.0,
         "gradient_accumulation_steps": 1,
         "adam_epsilon": 1e-8,
@@ -97,8 +98,8 @@ if __name__ == '__main__':
         "max_steps": -1,
         "warmup_steps": 0,
         "dropout_rate": 0.1,
-        "logging_steps": 1000,
-        "save_steps": 1000,
+        "logging_steps": 500,
+        "save_steps": 500,
         "no_cuda": False,
         "ignore_index": 0,
         "train_file_url": "../data/tnews_train.json",
@@ -138,7 +139,7 @@ if __name__ == '__main__':
         # "electra_small_generator": "E:\\nlp_tools\\electra_models\\chinese_electra_small_generator_pytorch",
     }
 
-    config_params['model_type'] = model_type[0]
+    config_params['model_type'] = model_type[1]
     config_params['model_name_or_path'] = pre_model_path[config_params['model_type']]
     config_params['model_save_path'] = "./output/model_{}_1126_1".format(config_params['model_type'])
     lc = LanguageModelClassificationTrain(config_params)

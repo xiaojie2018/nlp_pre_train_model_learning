@@ -6,7 +6,7 @@
 
 from transformers.modeling_bert import BertPreTrainedModel, BertModel, BertPooler
 import torch.nn as nn
-from tnews.config import MODEL_CLASSES
+from ocemotion.config import MODEL_CLASSES
 import torch
 import torch.nn.functional as F
 import numpy as np

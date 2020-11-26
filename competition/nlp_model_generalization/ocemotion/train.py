@@ -7,9 +7,10 @@ import pathlib
 import sys
 import os
 project_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent)
-from tnews.utils import ClassificationDataPreprocess, init_logger
+sys.path.append(project_path)
+from ocemotion.utils import ClassificationDataPreprocess, init_logger
 from argparse import Namespace
-from tnews.trainer import Trainer
+from ocemotion.trainer import Trainer
 import logging
 import json
 import codecs
@@ -86,7 +87,7 @@ if __name__ == '__main__':
         "model_name_or_path": "E:\\nlp_tools\\bert_models\\bert-base-chinese",
         "seed": 1234,
         "train_batch_size": 32,
-        "eval_batch_size": 32,
+        "eval_batch_size": 64,
         "max_seq_len": 128,
         "learning_rate": 5e-5,
         "num_train_epochs": 10,

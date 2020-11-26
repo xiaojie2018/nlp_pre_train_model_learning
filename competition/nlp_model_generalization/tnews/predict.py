@@ -8,7 +8,7 @@ import json
 from tnews.utils import ClassificationDataPreprocess
 from argparse import Namespace
 from tnews.trainer import Trainer
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 class LanguageModelClassificationPredict(ClassificationDataPreprocess):
