@@ -3,7 +3,12 @@
 # datetime: 2020/6/22 17:57
 # software: PyCharm
 
+import pathlib
+import sys
 import os
+project_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent)
+# print(project_path)
+sys.path.append(project_path)
 import json
 from tnews.utils import ClassificationDataPreprocess
 from argparse import Namespace
@@ -25,24 +30,21 @@ class LanguageModelClassificationPredict(ClassificationDataPreprocess):
     def process(self, texts):
         data = []
         for t in texts:
-            data.append((t, self.label_0))
+            # data.append({"text": t['text'][0], "label": self.label_0})
+            data.append((t['text'][0], self.label_0))
         return data
 
     def predict(self, texts):
         test_data = self.process(texts)
-        test_data_ = self._get_data(test_data, self.label_id, set_type='test')
+        test_data_ = self._get_data(test_data, self.label_id, set_type='predict')
 
         intent_preds_list, intent_preds_list_pr, intent_preds_list_all = self.trainer.evaluate_test(test_data_)
 
         result = []
-        for s in intent_preds_list_all:
-            s1 = {}
-            for k, v in s.items():
-                s1[k] = round(v, 6)
-            result.append(s1)
+        for t, r in zip(texts, intent_preds_list):
+            result.append({"id": t['id'], "label": r})
 
-        # return result
-        return [[x, y] for x, y in zip(texts, intent_preds_list)]
+        return result
 
 
 def read_test_data(file):
@@ -50,28 +52,26 @@ def read_test_data(file):
     data = []
     with open(file, 'r', encoding='utf-8') as f:
         for line in tqdm(f):
-            data.append(line.replace('\n', ''))
+            # data.append(line.replace('\n', ''))
+            data.append(eval(line))
     return data
 
 
 if __name__ == '__main__':
-    model_type = ["bert", "ernie", "albert", "roberta", "bert_www", "xlnet_base", "xlnet_mid",
-                  'electra_base_discriminator', 'electra_small_discriminator']
-
-    file = "./output/model_{}".format(model_type[6])
-    # file = '/output/model'
-    texts = ["上半身肥胖型", "运动传导束受累", "手术后反流性胃炎", "口腔黏膜嗜酸性溃疡"]
+    file = "./output/model_ernie_1126_2"
+    texts = [{"id": "0", "text": ["在设计史上,每当相对稳定的发展时期,这种设计思想就会成为主导"]},
+             {"id": "1", "text": ["利希施泰纳宣布赛季结束后离队:我需要新的挑战"]}]
     lcp = LanguageModelClassificationPredict(file)
     res = lcp.predict(texts)
     print(res)
 
-    test_file_path = "/home/hemei/xjie/bert_classification/ccks_7_1_competition_data/验证集"
-    texts = read_test_data(os.path.join(test_file_path, "entity_validation.txt"))
-    result = lcp.predict(texts)
+    predict_file = '../data_predict/tnews_predict.json'
+    data = read_test_data(predict_file)
+    res = lcp.predict(data)
 
-    output_file = './output_data/result_{}_12.txt'.format(model_type[6])
+    output_file = '../output/tnews_predict.json'
     f = open(output_file, 'w', encoding='utf-8')
-    for s in result:
-        f.write('\t'.join(s) + '\n')
+    for d in res:
+        json.dump(d, f, ensure_ascii=False)
+        f.write('\n')
     f.close()
-

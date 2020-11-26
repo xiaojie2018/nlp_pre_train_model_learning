@@ -280,8 +280,8 @@ class SimilarityDataPreprocess:
                 continue
             guid = "%s-%s" % (set_type, i)
             label_list = [0.0] * leng_label
-            for label in labels:
-                label_list[label_id[label]] = 1.0
+            # for label in labels:
+            label_list[label_id[labels]] = 1.0
             # label_list = float(labels)
 
             examples.append(InputExample(guid=guid, text=text, text_b=textb, label=label_list))

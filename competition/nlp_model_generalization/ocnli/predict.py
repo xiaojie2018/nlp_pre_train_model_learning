@@ -3,7 +3,12 @@
 # datetime: 2020/6/22 17:57
 # software: PyCharm
 
+import pathlib
+import sys
 import os
+project_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent)
+# print(project_path)
+sys.path.append(project_path)
 import json
 from ocnli.utils import SimilarityDataPreprocess
 from argparse import Namespace
@@ -17,16 +22,15 @@ class LanguageModelClassificationPredict(SimilarityDataPreprocess):
         config = json.load(open(os.path.join(config_file_name, 'classification_config.json'), 'r', encoding='utf-8'))
         self.config = Namespace(**config)
         super(LanguageModelClassificationPredict, self).__init__(self.config)
-        self.label_id = {int(k): v for k, v in self.config.label_id.items()}
+        self.label_id = {k: v for k, v in self.config.label_id.items()}
         self.label_0 = self.config.labels[0]
         self.trainer = Trainer(self.config)
         self.trainer.load_model()
 
     def process(self, texts):
-        return texts
         data = []
         for t in texts:
-            data.append((t, self.label_0))
+            data.append({"id": t['id'], "text": t['text'][0], "text_b": t['text'][1], "label": self.label_0})
         return data
 
     def predict(self, texts):
@@ -37,19 +41,9 @@ class LanguageModelClassificationPredict(SimilarityDataPreprocess):
 
         result = []
         for t, r in zip(texts, intent_preds_list):
-            result.append([t['id1'], t['id2'], r])
+            result.append({"id": t['id'], "label": r})
 
         return result
-
-        # result = []
-        # for s in intent_preds_list_all:
-        #     s1 = {}
-        #     for k, v in s.items():
-        #         s1[k] = round(v, 6)
-        #     result.append(s1)
-        #
-        # # return result
-        # return [[x, y] for x, y in zip(texts, intent_preds_list)]
 
 
 def read_test_data(file):
@@ -64,20 +58,20 @@ def read_test_data(file):
 
 if __name__ == '__main__':
 
-    file = "./output/model_ernie_1112_2"
-    texts = [{"id1": "0", "id2": "0", "text1": "东区西区？什么时候下证？", "text2": "我在给你发套", "label": 0},
-             {"id1": "0", "id2": "1", "text1": "东区西区？什么时候下证？", "text2": "您看下我发的这几套", "label": 0}]
+    file = "./output/model_ernie_1126_1"
+    texts = [{"id": "0", "text": ["来回一趟象我们两个人要两千五百块美金.", "我们有急事需要来回往返"]},
+             {"id": "1", "text": ["这个就被这门功课给卡下来了.", "这门功课挂科了"]}]
     lcp = LanguageModelClassificationPredict(file)
     res = lcp.predict(texts)
     print(res)
 
-    predict_file = 'D:\\bishai\\data\\ccf2020\\房产行业聊天问答匹配\\test\\test.json'
+    predict_file = '../data_predict/ocnli_predict.json'
     data = read_test_data(predict_file)
     res = lcp.predict(data)
 
-    o_file = './tijiao/text11_12_2.tsv'
-    f = open(o_file, 'w', encoding='utf-8')
-    for r in res:
-        r1 = '{}\t{}\t{}\n'.format(str(r[0]), str(r[1]), str(r[2]))
-        f.write(r1)
+    output_file = '../output/ocnli_predict.json'
+    f = open(output_file, 'w', encoding='utf-8')
+    for d in res:
+        json.dump(d, f, ensure_ascii=False)
+        f.write('\n')
     f.close()
