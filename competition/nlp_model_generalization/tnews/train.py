@@ -85,7 +85,7 @@ if __name__ == '__main__':
         "model_type": "bert",
         "task_type": "classification",
         "model_name_or_path": "E:\\nlp_tools\\bert_models\\bert-base-chinese",
-        "seed": 1234,
+        "seed": 42,
         "train_batch_size": 32,
         "eval_batch_size": 64,
         "max_seq_len": 128,
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     config_params['model_type'] = model_type[1]
     config_params['model_name_or_path'] = pre_model_path[config_params['model_type']]
-    config_params['model_save_path'] = "./output/model_{}_1126_1".format(config_params['model_type'])
+    config_params['model_save_path'] = "./output/model_{}_1126_2".format(config_params['model_type'])
     lc = LanguageModelClassificationTrain(config_params)
     lc.data_preprocess()
     lc.fit()

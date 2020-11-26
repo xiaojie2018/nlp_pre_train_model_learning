@@ -132,7 +132,7 @@ class ClassificationModel(BertPreTrainedModel):
         # for param in self.bert.parameters():
         #     param.requires_grad = True
 
-        self.pooling = BertPool(bert_config)
+        # self.pooling = BertPool(bert_config)
 
         # attention
         # self.att = SelfAttention(sentence_num=34, key_size=bert_config.hidden_size, hidden_size=bert_config.hidden_size)
