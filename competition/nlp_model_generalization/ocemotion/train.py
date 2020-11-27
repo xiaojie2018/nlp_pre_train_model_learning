@@ -86,7 +86,7 @@ if __name__ == '__main__':
         "task_type": "classification",
         "model_name_or_path": "E:\\nlp_tools\\bert_models\\bert-base-chinese",
         "seed": 42,
-        "train_batch_size": 16,
+        "train_batch_size": 32,
         "eval_batch_size": 64,
         "max_seq_len": 128,
         "learning_rate": 5e-5,
@@ -98,8 +98,8 @@ if __name__ == '__main__':
         "max_steps": -1,
         "warmup_steps": 0,
         "dropout_rate": 0.1,
-        "logging_steps": 1000,
-        "save_steps": 1000,
+        "logging_steps": 500,
+        "save_steps": 500,
         "no_cuda": False,
         "ignore_index": 0,
         "train_file_url": "../data/ocemotion_train.json",
@@ -139,9 +139,9 @@ if __name__ == '__main__':
         # "electra_small_generator": "E:\\nlp_tools\\electra_models\\chinese_electra_small_generator_pytorch",
     }
 
-    config_params['model_type'] = model_type[0]
+    config_params['model_type'] = model_type[1]
     config_params['model_name_or_path'] = pre_model_path[config_params['model_type']]
-    config_params['model_save_path'] = "./output/model_{}_1126_2".format(config_params['model_type'])
+    config_params['model_save_path'] = "./output/model_{}_1126_1".format(config_params['model_type'])
     lc = LanguageModelClassificationTrain(config_params)
     lc.data_preprocess()
     lc.fit()

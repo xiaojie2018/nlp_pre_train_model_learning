@@ -58,7 +58,7 @@ def read_test_data(file):
 
 
 if __name__ == '__main__':
-    file = "./output/model_bert_1126_1"
+    file = "./output/model_ernie_1126_1"
     texts = [{"id": "0", "text": ["其实我愿意吞声忍气，但却怕被看不起。"]},
              {"id": "1", "text": ["跟自己说对不起，总是为难自己，让自己生活在水深火热中，对不起。我要买漂亮的衣服来犒劳自己。"]}]
     lcp = LanguageModelClassificationPredict(file)
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     data = read_test_data(predict_file)
     res = lcp.predict(data)
 
-    output_file = '../output/ocemotion_predict.json'
+    output_file = '../submit/ocemotion_predict.json'
     f = open(output_file, 'w', encoding='utf-8')
     for d in res:
         json.dump(d, f, ensure_ascii=False)
