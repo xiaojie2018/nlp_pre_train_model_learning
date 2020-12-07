@@ -5,7 +5,7 @@ import random
 import pandas as pd
 
 
-file_path = "E:\\bishai\\数据集\\NLP中文预训练模型泛化能力挑战赛\\"
+file_path = "E:\\bishai\\数据集\\NLP中文预训练模型泛化能力挑战赛_1203\\"
 
 
 def read_data(file):
@@ -153,5 +153,5 @@ def read_tnews_data(file, outfile):
 if __name__ == '__main__':
     flags = [('OCEMOTION', read_ocemotion_data), ("OCNLI", read_ocnli_data), ("TNEWS", read_tnews_data)]
     for flag, f in flags:
-        file = file_path + '{}_train.csv'.format(flag)
-        data = f(file, './data/{}'.format(flag.lower()))
+        file = file_path + '{}_train1128.csv'.format(flag)
+        data = f(file, './data_1203/{}'.format(flag.lower()))
